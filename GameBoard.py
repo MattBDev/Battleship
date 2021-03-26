@@ -1,6 +1,6 @@
 import pygame
 
-import colors
+from constants import BLACK, WHITE, RED, BLUE, width, height, margin, size
 
 """
 The Tile class composes the basic makeup of the Battleship board.
@@ -11,6 +11,7 @@ ship: Is a ship segment present?
 class Tile:
     shot = False
     ship = False
+
 
 
 """
@@ -44,17 +45,9 @@ class Board(object):
         return self.turns
 
     def print_board(self):
-        # This sets the WIDTH and HEIGHT of each grid location
-        width, height = 60, 60
-
-        # This sets the margin between each tile
-        margin = 4
-
         # Initialize pygame
         pygame.init()
 
-        # Set the Width and Height of the screen [width, height]
-        size = [(width * 10) + (margin * 10), (height * 10) + (margin * 10)]
         screen = pygame.display.set_mode(size)
         pygame.display.set_caption("Battleship")
 
@@ -71,16 +64,16 @@ class Board(object):
             # --- Screen-clearing code goes here
 
             # Drawing the display
-            screen.fill(colors.BLACK)
+            screen.fill(BLACK)
 
             # Fills all of the grid spaces with white
             for row in range(10):
                 for column in range(10):
-                    color = colors.BLUE
+                    color = BLUE
                     if self.grid[row][column] == 1:  # Miss
-                        color = colors.WHITE
+                        color = WHITE
                     if self.grid[row][column] == 2:  # Hit
-                        color = colors.RED
+                        color = RED
 
                     pygame.draw.rect(screen, color, [(margin + width) * column + margin,
                                                      (margin + height) * row + margin,
