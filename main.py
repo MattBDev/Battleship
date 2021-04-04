@@ -40,13 +40,11 @@ import GameBoard
 class Ship:
     onTiles = []
 
-
+    
 def main():
-    print("Hello, world!")
-
     # Example of how to create an instance of a class type and access a tile.
     myBoard = GameBoard.Board()
-    myBoard.print_board()
+    myBoard.print_board(1)
 
 
 # This snippet of code calls main(). Without this, main() will not run.
