@@ -1,6 +1,5 @@
 import pygame
-
-from constants import BLACK, WHITE, RED, BLUE, width, height, margin, size
+from constants import *
 
 """
 The Tile class composes the basic makeup of the Battleship board.
@@ -11,7 +10,6 @@ ship: Is a ship segment present?
 class Tile:
     shot = False
     ship = False
-
 
 
 """
@@ -25,7 +23,6 @@ self.ships: Contains references to all of this board's ships.
 
 TODO:
     1. add width and height to init?
-    2. add Tile to append
 """
 class Board(object):
     def __init__(self, result = 0, turns = 0):
@@ -44,15 +41,14 @@ class Board(object):
     def shootTile(self, coord):
         self.grid[coord[0]][coord[1]].shot = True
 
+
     # Returns the amount of turns taken to main so that it can be used in the scoreboard
     def get_turns(self):
         return self.turns
 
-    def print_board(self):
-        # Initialize pygame
-        pygame.init()
 
-        screen = pygame.display.set_mode(size)
+    def single_board(self):
+        screen = pygame.display.set_mode(size1)
         pygame.display.set_caption("Battleship")
 
         AllShipsSunk = False  # Loop until the user clicks the close button
@@ -68,14 +64,14 @@ class Board(object):
             # --- Screen-clearing code goes here
 
             # Drawing the display
-            screen.fill(BLACK)
+            screen.fill(WHITE)
 
             # Fills all of the grid spaces with white
             for row in range(10):
                 for column in range(10):
                     color = BLUE
                     if self.grid[row][column] == 1:  # Miss
-                        color = WHITE
+                        color = BLACK
                     if self.grid[row][column] == 2:  # Hit
                         color = RED
 
@@ -87,3 +83,57 @@ class Board(object):
             pygame.display.flip()
             clock.tick(60)
         pygame.quit()
+
+
+    def double_board(self):
+        screen = pygame.display.set_mode(size2)
+        pygame.display.set_caption("Battleship")
+
+        AllShipsSunk = False  # Loop until the user clicks the close button
+        clock = pygame.time.Clock()  # Used to manage how fast the screen updates
+
+        while not AllShipsSunk:
+            for event in pygame.event.get():  # User did something
+                if event.type == pygame.QUIT:  # If user clicked close
+                    AllShipsSunk = True  # Flag that we are done so we exit this loop
+
+            # --- Game logic should go here
+
+            # --- Screen-clearing code goes here
+
+            # Drawing the display
+            screen.fill(WHITE)
+
+            pygame.draw.rect(screen, BLACK, pygame.Rect(1288 / 2, 0, 40, 644))
+
+            # Fills all of the grid spaces with white
+            for row in range(10):
+                for column in range(20):
+                    color = BLUE
+
+                    if column > 9:
+                        pygame.draw.rect(screen, color,
+                                         [(margin + width) * column+44 + margin,
+                                          (margin + height) * row + margin, width,
+                                          height])
+
+                    if column < 10:
+                        pygame.draw.rect(screen, color,
+                                         [(margin + width) * column + margin,
+                                          (margin + height) * row + margin, width,
+                                          height])
+
+            # Updates the screen with what has been drawn.
+            pygame.display.flip()
+            clock.tick(60)
+        pygame.quit()
+
+
+    def print_board(self, choice):
+        # Initialize pygame
+        pygame.init()
+
+        if choice == 1:
+            self.single_board()
+        elif choice == 2:
+            self.double_board()
