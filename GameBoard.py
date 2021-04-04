@@ -35,10 +35,14 @@ class Board(object):
         self.ships = []
 
         # Create a 2D array
-        for row in range(10):
+        for row in range(9):
             self.grid.append([])  # Add an empty array that will hold each Tile
-            for column in range(10):
-                self.grid[row].append([Tile.shot, Tile.ship])
+            for column in range(9):
+                self.grid[row].append(Tile)
+
+    # Shoot the given tile and perform the appropriate cleanup.
+    def shootTile(self, coord):
+        self.grid[coord[0]][coord[1]].shot = True
 
     # Returns the amount of turns taken to main so that it can be used in the scoreboard
     def get_turns(self):
