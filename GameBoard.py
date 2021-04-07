@@ -1,6 +1,7 @@
 import pygame
 from constants import *
 
+
 """
 The Tile class composes the basic makeup of the Battleship board.
 
@@ -21,8 +22,9 @@ __init__(self): This default constructor initializes empty lists for ships and t
 self.grid: Contains the game grid.
 self.ships: Contains references to all of this board's ships.
 
-TODO:
-    1. add width and height to init?
+shootTile: shoot the given tile and perform the appropriate cleanup
+single_board: displays one grid to screen when testing algorithms
+double_board: displays two grids to screen when comparing algorithms
 """
 class Board(object):
     def __init__(self, result = 0, turns = 0):
@@ -32,20 +34,21 @@ class Board(object):
         self.ships = []
 
         # Create a 2D array
-        for row in range(9):
+        for row in range(10):
             self.grid.append([])  # Add an empty array that will hold each Tile
-            for column in range(9):
-                self.grid[row].append(Tile)
+            for column in range(10):
+                self.grid[row].append([Tile.shot, Tile.ship])
 
-    # Shoot the given tile and perform the appropriate cleanup.
+    # shoot the given tile and perform the appropriate cleanup
     def shootTile(self, coord):
-        self.grid[coord[0]][coord[1]].shot = True
-
+        print(coord)
+        # self.grid[coord[0]][coord[1]].shot = True
+        # self.grid[coord[0]][coord[1]].shot = [True, False]
+        self.grid[coord[0]][coord[1]] = [True, False]
 
     # Returns the amount of turns taken to main so that it can be used in the scoreboard
     def get_turns(self):
         return self.turns
-
 
     def single_board(self):
         screen = pygame.display.set_mode(size1)
@@ -84,7 +87,6 @@ class Board(object):
             clock.tick(60)
         pygame.quit()
 
-
     def double_board(self):
         screen = pygame.display.set_mode(size2)
         pygame.display.set_caption("Battleship")
@@ -111,9 +113,11 @@ class Board(object):
                 for column in range(20):
                     color = BLUE
 
+                    # TODO: implement if statement for grid hit/miss as in single_board
+
                     if column > 9:
                         pygame.draw.rect(screen, color,
-                                         [(margin + width) * column+44 + margin,
+                                         [(margin + width) * column + 44 + margin,
                                           (margin + height) * row + margin, width,
                                           height])
 
@@ -127,7 +131,6 @@ class Board(object):
             pygame.display.flip()
             clock.tick(60)
         pygame.quit()
-
 
     def print_board(self, choice):
         # Initialize pygame
