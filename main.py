@@ -32,17 +32,14 @@ contain a Tile. Note that the entire game consists of two boards (one for each p
 import GameBoard
 import agents
 
-def main():
-    # Example of how to create an instance of a class type and access a tile.
-    # myBoard = Board()
-    # myBoard.grid
-    # myBoard.grid[1][6]
 
-    # Initialization
+def main():
+    # Initialize
     done = -1
 
     myBoard = GameBoard.Board()
 
+    
     playerOne = agents.HP_AI(myBoard)
     playerTwo = agents.HP_AI(myBoard)
 
@@ -57,8 +54,10 @@ def main():
             done = 2
 
     print("GAMEOVER: Player ", done, " has lost!")
+    
 
-# This snippet of code calls main(). Without this, main() will not run.
-# The if statement is true only when run as a program.
+    myBoard.print_board(1)
+
+
 if __name__ == "__main__":
     main()
