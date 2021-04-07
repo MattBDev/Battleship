@@ -1,11 +1,8 @@
-# 2021.04.04
-# Mit Bailey
-# Copyright (c) 2021
-
 # This file contains the AI agents.
 
-import algorithms
 import actions
+import algorithms
+
 
 class HP_AI:
     def __init__(self, board):
@@ -17,6 +14,7 @@ class HP_AI:
         self.shipSet.append(algorithms.HP_placeShip(self.board, "Destroyer"))
         self.shipSet.append(algorithms.HP_placeShip(self.board, "Submarine"))
         self.shipSet.append(algorithms.HP_placeShip(self.board, "PTBoat"))
+
         for ship in self.shipSet:
             print(ship)
 
@@ -29,11 +27,10 @@ class HP_AI:
             if ship.isAlive():
                 self.shipsAlive += 1
 
-        if self.shipsAlive is 0:
+        if self.shipsAlive == 0:
             return
 
     # Called when the game is ready for this AI to take their turn.
     def takeTurn(self):
         shotCoord = algorithms.HP_findShot(self.board)
         actions.fire(self.board, shotCoord)
-

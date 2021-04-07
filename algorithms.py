@@ -1,7 +1,3 @@
-# 2021.04.04
-# Mit Bailey
-# Copyright (c) 2021
-
 # This file contains algorithms to be employed by the various AIs.
 
 """
