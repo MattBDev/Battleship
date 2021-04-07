@@ -4,23 +4,31 @@
 
 # This file contains algorithms to be employed by the various AIs.
 
-# The Ship class is used to generate one of each type of Battleship ship.
-# onTiles: References to the Tile objects on top of which this ship resides.
+"""
+The ship class is used to generate one of each type of ship.
+
+onTiles: References to the Tile objects on top of which this ship resides
+
+self.length: number of tiles ship occupies
+self.aliveSections: what tiles of the ship have not been hit
+self.sections: array representing tile sections the ship is on
+"""
 class Ship:
-    def __init__(self, origin, direction, length): # origin = origin coordinate
+    def __init__(self, origin, direction, length):  # origin = origin coordinate
         self.length = length
-        self.aliveSections = length # this is variable
+        self.aliveSections = length
 
         self.sections = []
-        # Sections take the form ((xCoord, yCoord), Alive?)
+
+        # Sections take the form [(xCoord, yCoord), Alive?]
         for index in range(self.length):
-            if direction is "North":
+            if direction == "North":
                 self.sections.append(((origin[0], origin[1] + index), True))
-            elif direction is "South":
+            elif direction == "South":
                 self.sections.append(((origin[0], origin[1] - index), True))
-            elif direction is "East":
+            elif direction == "East":
                 self.sections.append(((origin[0] + index, origin[1]), True))
-            elif direction is "West":
+            elif direction == "West":
                 self.sections.append(((origin[0] - index, origin[1]), True))
 
     def hit(self, coord):
@@ -37,17 +45,17 @@ def HP_findShot(board):
     x = 0
     y = 0
 
-    return (x, y)
+    return x, y
 
 # TODO: This function.
-def HP_placeShip(board, type):
-    if type is "Carrier":
+def HP_placeShip(board, vessel):
+    if vessel == "Carrier":
         return Ship((0, 0), "North", 5)
-    elif type is "Battleship":
+    elif vessel == "Battleship":
         return Ship((0, 0), "North", 4)
-    elif type is "Destroyer":
+    elif vessel == "Destroyer":
         return Ship((0, 0), "North", 3)
-    elif type is "Submarine":
+    elif vessel == "Submarine":
         return Ship((0, 0), "North", 3)
-    elif type is "PTBoat":
+    elif vessel == "PTBoat":
         return Ship((0, 0), "North", 2)
