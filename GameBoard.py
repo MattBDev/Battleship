@@ -1,3 +1,7 @@
+# 2021.03.16
+# Mit Bailey, Ryan Balachandran
+# Copyright (c) 2021
+
 import pygame
 from constants import *
 

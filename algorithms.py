@@ -1,3 +1,7 @@
+# 2021.03.16
+# Mit Bailey, Ryan Balachandran
+# Copyright (c) 2021
+
 # This file contains algorithms to be employed by the various AIs.
 
 """

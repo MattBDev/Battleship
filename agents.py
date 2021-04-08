@@ -1,3 +1,7 @@
+# 2021.03.16
+# Mit Bailey
+# Copyright (c) 2021
+
 # This file contains the AI agents.
 
 import actions
