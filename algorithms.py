@@ -1,10 +1,14 @@
+# 2021.03.16
+# Mit Bailey
+# Ryan Balachandran
+# Copyright (c) 2021
+
 # This file contains algorithms to be employed by the various AIs.
 
 """
 The ship class is used to generate one of each type of ship.
 
 onTiles: References to the Tile objects on top of which this ship resides
-
 self.length: number of tiles ship occupies
 self.aliveSections: what tiles of the ship have not been hit
 self.sections: array representing tile sections the ship is on
@@ -30,6 +34,8 @@ class Ship:
     def hit(self, coord):
         self.sections[self.sections.index(((coord[0], coord[1]), True))][2] = False
         self.aliveSections -= 1
+
+        # TODO: add hit and miss function from GameBoard
 
     def isAlive(self):
         if self.aliveSections <= 0:
