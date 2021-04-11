@@ -1,5 +1,6 @@
 # 2021.03.16
 # Mit Bailey
+# Ryan Balachandran
 # Copyright (c) 2021
 
 '''
@@ -39,6 +40,7 @@ def main():
 
     myBoard = GameBoard.Board()
 
+    # TODO: add statistics scoreboard for end of game
     
     playerOne = agents.HP_AI(myBoard)
     playerTwo = agents.HP_AI(myBoard)
