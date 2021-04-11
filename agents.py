@@ -1,7 +1,13 @@
+# 2021.03.16
+# Mit Bailey
+# Ryan Balachandran
+# Copyright (c) 2021
+
 # This file contains the AI agents.
 
 import actions
 import algorithms
+import GameBoard
 
 
 class HP_AI:
@@ -34,3 +40,7 @@ class HP_AI:
     def takeTurn(self):
         shotCoord = algorithms.HP_findShot(self.board)
         actions.fire(self.board, shotCoord)
+        GameBoard.Statistics.add_turns()
+
+
+# TODO: add random AI class
