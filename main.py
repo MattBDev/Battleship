@@ -55,6 +55,8 @@ def main():
             done = 1
         elif playerTwo.evaluate():
             done = 2
+        # Remove the variable below once the game loop is ready and functional.
+        done = -1
 
     print("GAMEOVER: Player ", done, " has lost!")
 
