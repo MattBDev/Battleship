@@ -42,10 +42,35 @@ class Ship:
             return False
         return True
 
-def HP_findShot(board):
+def HP_findShot(board, prevShot):
     # TODO: Add code to actually find a good shot.
+
+    # The Hunt-Parity algorithm works by
+    # PARITY
+    # - Not firing at squarely adjacent tiles.
+    # HUNT
+    # - Once a hit is achieved, search the nearby tiles.
+
     x = 0
     y = 0
+
+
+    if (board.grid[prevShot[0]][prevShot[1]].shot is True and board.grid[prevShot[0]][prevShot[1]].ship is True)
+        pass # TODO: Find an appropriate shot near the hit
+    else
+        if (board.grid[0][0].shot is True)
+            # We shot (0,0) first.
+            while (board.grid[x][y].shot is True and y <= 10)
+                x = (x + 2) % 11
+                y += 1
+        elif (board.grid[0][1].shot is True)
+            # We shot (0,1) first.
+                x = (x + 2) % 11
+                y += 1
+        else
+            # We have not yet shot.
+            x = random.randint(0, 1)
+            y = 0
 
     return x, y
 

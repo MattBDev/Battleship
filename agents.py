@@ -14,6 +14,7 @@ class HP_AI:
     def __init__(self, board):
         self.board = board
         self.shipsAlive = 5
+        self.prevShot = -1, -1
         self.shipSet = []
         self.shipSet.append(algorithms.HP_placeShip(self.board, "Carrier"))
         self.shipSet.append(algorithms.HP_placeShip(self.board, "Battleship"))
@@ -38,7 +39,8 @@ class HP_AI:
 
     # Called when the game is ready for this AI to take their turn.
     def takeTurn(self):
-        shotCoord = algorithms.HP_findShot(self.board)
+        shotCoord = algorithms.HP_findShot(self.board, self.prevShot)
+        self.prevShot = shotCoord
         actions.fire(self.board, shotCoord)
         GameBoard.Statistics.add_turns()
 
