@@ -1,3 +1,7 @@
+# 2021.03.16
+# Ryan Balachandran
+# Copyright (c) 2021
+
 # Define some colors
 from typing import List, Tuple
 
