@@ -1,3 +1,7 @@
+# 2021.03.16
+# Matt Bonanno
+# Copyright (c) 2021
+
 from enum import Enum
 class Direction(Enum):
     NORTH = 1
@@ -7,4 +11,4 @@ class Direction(Enum):
 
 class Orientation(Enum):
     HORIZONTAL = 1  # When the ship is along the x axis.
-    VERTICAL = 0  # when the ship is along the y axis. 
+    VERTICAL = 0  # when the ship is along the y axis.

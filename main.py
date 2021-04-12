@@ -1,6 +1,7 @@
 # 2021.03.16
 # Mit Bailey
 # Ryan Balachandran
+# Matt Bonanno
 # Copyright (c) 2021
 
 '''
@@ -16,16 +17,16 @@ contain a Tile. Note that the entire game consists of two boards (one for each p
 
   0 1 2 3 4 5 6 7 8 9
   x x x x x x x x x x
-0 y y y y y y y y y y 
-1 y y y y y y y y y y 
-2 y y y y y y y y y y 
-3 y y y y y y y y y y 
-4 y y y y y y y y y y 
-5 y y y y y y y y y y 
-6 y y y y y y y y y y 
-7 y y y y y y y y y y 
-8 y y y y y y y y y y 
-9 y y y y y y y y y y 
+0 y y y y y y y y y y
+1 y y y y y y y y y y
+2 y y y y y y y y y y
+3 y y y y y y y y y y
+4 y y y y y y y y y y
+5 y y y y y y y y y y
+6 y y y y y y y y y y
+7 y y y y y y y y y y
+8 y y y y y y y y y y
+9 y y y y y y y y y y
 
 '''
 
@@ -41,7 +42,7 @@ def main():
     myBoard = GameBoard.Board()
 
     # TODO: add statistics scoreboard for end of game
-    
+
     playerOne = agents.HP_AI(myBoard)
     playerTwo = agents.HP_AI(myBoard)
 
@@ -56,7 +57,7 @@ def main():
             done = 2
 
     print("GAMEOVER: Player ", done, " has lost!")
-    
+
 
     myBoard.print_board(1)
 

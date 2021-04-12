@@ -1,10 +1,12 @@
 # 2021.03.16
 # Mit Bailey
 # Ryan Balachandran
+# Matt Bonanno
 # Copyright (c) 2021
 
 # This file contains the AI agents.
 
+from constants import BATTLESHIP, CARRIER, DESTROYER, PTBOAT, SUBMARINE
 import actions
 import algorithms
 import GameBoard
@@ -16,11 +18,11 @@ class HP_AI:
         self.shipsAlive = 5
         self.prevShot = -1, -1
         self.shipSet = []
-        self.shipSet.append(algorithms.HP_placeShip(self.board, "Carrier"))
-        self.shipSet.append(algorithms.HP_placeShip(self.board, "Battleship"))
-        self.shipSet.append(algorithms.HP_placeShip(self.board, "Destroyer"))
-        self.shipSet.append(algorithms.HP_placeShip(self.board, "Submarine"))
-        self.shipSet.append(algorithms.HP_placeShip(self.board, "PTBoat"))
+        self.shipSet.append(algorithms.placeShip(self.board, CARRIER))
+        self.shipSet.append(algorithms.placeShip(self.board, BATTLESHIP))
+        self.shipSet.append(algorithms.placeShip(self.board, DESTROYER))
+        self.shipSet.append(algorithms.placeShip(self.board, SUBMARINE))
+        self.shipSet.append(algorithms.placeShip(self.board, PTBOAT))
 
         for ship in self.shipSet:
             print(ship)
@@ -42,7 +44,7 @@ class HP_AI:
         shotCoord = algorithms.HP_findShot(self.board, self.prevShot)
         self.prevShot = shotCoord
         actions.fire(self.board, shotCoord)
-        GameBoard.Statistics.add_turns()
+        # GameBoard.Statistics.add_turns() # TODO the statistics object needs to exist before we can actually use this function
 
 
 # TODO: add random AI class
