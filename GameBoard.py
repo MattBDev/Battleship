@@ -1,5 +1,6 @@
 # 2021.03.16
-# Mit Bailey, Ryan Balachandran
+# Mit Bailey
+# Ryan Balachandran
 # Copyright (c) 2021
 
 import pygame
@@ -18,6 +19,60 @@ class Tile:
 
 
 """
+Statistics class returns various states and scores at the end of the game
+
+shots: number of shots taken in the game
+misses: number of misses taken in the game
+hits: number of hits taken in the game, max of 17 per player
+turns: number of turns in the game
+result: display of all above
+"""
+class Statistics(object):
+    def __init__(self, shots = 0, misses = 0, hits = 0, turns = 0, result = 0):
+        self.shots = shots
+        self.misses = misses
+        self.hits = hits
+        self.turns = turns
+        self.result = result
+
+    # Returns number of shots taken
+    def get_shots(self):
+        return self.shots
+
+    def add_shots(self):
+        self.shots = self.shots + 1
+        return self.shots
+
+    # Returns number of misses
+    def get_misses(self):
+        return self.misses
+
+    def add_misses(self):
+        self.misses = self.misses + 1
+        return self.misses
+
+    # Returns number of hits
+    def get_hits(self):
+        return self.hits
+
+    def add_hits(self):
+        self.hits = self.hits + 1
+        return self.hits
+
+    # Returns number of turns taken
+    def get_turns(self):
+        return self.turns
+
+    def add_turns(self):
+        self.turns = self.turns + 1
+        return self.turns
+
+    # Returns result of the game
+    def get_result(self):
+        return self.result
+
+
+"""
 Board class contains the Ships and Tiles for one player
 
 __init__(self): This default constructor initializes empty lists for ships and the
@@ -31,9 +86,7 @@ single_board: displays one grid to screen when testing algorithms
 double_board: displays two grids to screen when comparing algorithms
 """
 class Board(object):
-    def __init__(self, result = 0, turns = 0):
-        self.result = result
-        self.turns = turns
+    def __init__(self):
         self.grid = []  # Used for making the gameboard
         self.ships = []
 
@@ -47,12 +100,7 @@ class Board(object):
     def shootTile(self, coord):
         print(coord)
         # self.grid[coord[0]][coord[1]].shot = True
-        # self.grid[coord[0]][coord[1]].shot = [True, False]
-        self.grid[coord[0]][coord[1]] = [True, False]
-
-    # Returns the amount of turns taken to main so that it can be used in the scoreboard
-    def get_turns(self):
-        return self.turns
+        self.grid[coord[0]][coord[1]] = [True]
 
     def single_board(self):
         screen = pygame.display.set_mode(size1)
