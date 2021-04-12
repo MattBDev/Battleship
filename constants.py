@@ -1,4 +1,7 @@
 # Define some colors
+from typing import List, Tuple
+
+
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
@@ -18,3 +21,6 @@ size1 = [(width * 10) + (margin * 10) + margin,
 # Set the Width and Height of the screen [width, height]
 size2 = [((width * 10) + (margin * 10) + margin) * 2 + 40,
          (height * 10) + (margin * 10) + margin]
+
+ALL_SHIPS: List[Tuple[str, int]] = [("Carrier", 5), ("Battleship", 4),
+             ("Destroyer", 3), ("Submarine", 3), ("PTBoat", 2)]
