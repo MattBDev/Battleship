@@ -14,7 +14,7 @@ The Tile class composes the basic makeup of the Battleship board.
 shot: Has this tile been shot at?
 ship: Is a ship segment present?
 """
-class Tile:
+class Tile(object):
     shot = False
     ship = False
 
@@ -95,13 +95,14 @@ class Board(object):
         for row in range(10):
             self.grid.append([])  # Add an empty array that will hold each Tile
             for column in range(10):
-                self.grid[row].append([Tile.shot, Tile.ship])
+                self.grid[row].append(Tile)
+                # self.grid[row].append([Tile.shot, Tile.ship])
 
     # shoot the given tile and perform the appropriate cleanup
     def shootTile(self, coord):
         print(coord)
-        # self.grid[coord[0]][coord[1]].shot = True
-        self.grid[coord[0]][coord[1]] = [True]
+        self.grid[coord[0]][coord[1]].shot = True
+        # self.grid[coord[0]][coord[1]] = [True]
 
     def single_board(self):
         screen = pygame.display.set_mode(size1)
@@ -126,6 +127,9 @@ class Board(object):
             for row in range(10):
                 for column in range(10):
                     color = BLUE
+
+                    # TODO: Find a way to get coordinates of shot made by AI to change
+                    #  grid tile color
                     if self.grid[row][column] == 1:  # Miss
                         color = BLACK
                     if self.grid[row][column] == 2:  # Hit

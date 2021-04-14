@@ -7,3 +7,4 @@
 def fire(board, coord):
     print("Firing at tile (", coord[0], ", ", coord[1], ").")
     board.shootTile(coord)
+    board.Statistics.add_shots()

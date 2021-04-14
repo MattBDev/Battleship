@@ -28,7 +28,8 @@ size2 = [((width * 10) + (margin * 10) + margin) * 2 + 40,
          (height * 10) + (margin * 10) + margin]
 
 ALL_SHIPS: List[Tuple[str, int]] = [("Carrier", 5), ("Battleship", 4),
-             ("Destroyer", 3), ("Submarine", 3), ("PTBoat", 2)]
+                                    ("Destroyer", 3), ("Submarine", 3), ("PTBoat", 2)]
+
 CARRIER = ALL_SHIPS[0]
 BATTLESHIP = ALL_SHIPS[1]
 DESTROYER = ALL_SHIPS[2]

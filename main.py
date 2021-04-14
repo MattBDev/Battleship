@@ -4,7 +4,7 @@
 # Matt Bonanno
 # Copyright (c) 2021
 
-'''
+"""
 This is the main.py file of the Artificial Intelligence for Battleship using Genetic Programming.
 
 How does it work?
@@ -27,8 +27,7 @@ contain a Tile. Note that the entire game consists of two boards (one for each p
 7 y y y y y y y y y y
 8 y y y y y y y y y y
 9 y y y y y y y y y y
-
-'''
+"""
 
 # Imports
 import GameBoard
@@ -59,7 +58,6 @@ def main():
         done = -1
 
     print("GAMEOVER: Player ", done, " has lost!")
-
 
     myBoard.print_board(1)
 

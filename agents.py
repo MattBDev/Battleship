@@ -9,7 +9,6 @@
 from constants import BATTLESHIP, CARRIER, DESTROYER, PTBOAT, SUBMARINE
 import actions
 import algorithms
-import GameBoard
 
 
 class HP_AI:
@@ -44,7 +43,7 @@ class HP_AI:
         shotCoord = algorithms.HP_findShot(self.board, self.prevShot)
         self.prevShot = shotCoord
         actions.fire(self.board, shotCoord)
-        # GameBoard.Statistics.add_turns() # TODO the statistics object needs to exist before we can actually use this function
+        self.board.add_turns()  # TODO the statistics object needs to exist before we can actually use this function
 
 
 # TODO: add random AI class
