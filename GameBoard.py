@@ -29,12 +29,11 @@ turns: number of turns in the game
 result: display of all above
 """
 class Statistics(object):
-    def __init__(self, shots = 0, misses = 0, hits = 0, turns = 0, result = 0):
+    def __init__(self, shots = 0, misses = 0, hits = 0, turns = 0):
         self.shots = shots
         self.misses = misses
         self.hits = hits
         self.turns = turns
-        self.result = result
 
     # Returns number of shots taken
     def get_shots(self):
@@ -70,7 +69,10 @@ class Statistics(object):
 
     # Returns result of the game
     def get_result(self):
-        return self.result
+        print("Game lasted for:", self.get_turns, " turns")
+        print("Player made:", self.get_shots, " Shots")
+        print("Player made:", self.get_misses, " misses")
+        print("Player hit ships:", self.get_hits, " times")
 
 
 """
@@ -96,13 +98,11 @@ class Board(object):
             self.grid.append([])  # Add an empty array that will hold each Tile
             for column in range(10):
                 self.grid[row].append(Tile)
-                # self.grid[row].append([Tile.shot, Tile.ship])
 
     # shoot the given tile and perform the appropriate cleanup
     def shootTile(self, coord):
         print(coord)
-        self.grid[coord[0]][coord[1]].shot = True
-        # self.grid[coord[0]][coord[1]] = [True]
+        self.grid[coord[0]][coord[1]] = [True, False]
 
     def single_board(self):
         screen = pygame.display.set_mode(size1)
@@ -128,12 +128,12 @@ class Board(object):
                 for column in range(10):
                     color = BLUE
 
-                    # TODO: Find a way to get coordinates of shot made by AI to change
-                    #  grid tile color
-                    if self.grid[row][column] == 1:  # Miss
+                    if self.grid[row][column] == [True, False]:     # Miss
                         color = BLACK
-                    if self.grid[row][column] == 2:  # Hit
+                    if self.grid[row][column] == [True, True]:      # Hit
                         color = RED
+                    if self.grid[row][column] == [False, True]:     # Ship
+                        color = GREEN
 
                     pygame.draw.rect(screen, color, [(margin + width) * column + margin,
                                                      (margin + height) * row + margin,

@@ -10,5 +10,5 @@ class Direction(Enum):
     WEST = 4
 
 class Orientation(Enum):
-    HORIZONTAL = 1  # When the ship is along the x axis.
-    VERTICAL = 0  # when the ship is along the y axis.
+    HORIZONTAL = 1      # When the ship is along the x axis.
+    VERTICAL = 0        # when the ship is along the y axis.
