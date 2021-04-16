@@ -94,6 +94,21 @@ def HP_findShot(board, prevShot):
 
     return x, y
 
+
+def Random_findShot(board, prevShot):
+    # The Random algorithm works by firing at random tiles
+    x = 0
+    y = 0
+
+    # Randomly shoot within grid parameters
+    # TODO: make sure tile is not shot at twice
+    while not board.grid[prevShot[0]][prevShot[1]].shot:
+        x = random.randint(0, 9)
+        y = random.randint(0, 9)
+
+    return x, y
+
+
 def isLegal(board: Board, x, y, orientation, ship_length):
     if Ship.isInGrid(x, y, orientation, ship_length):
         i = 0
@@ -108,6 +123,7 @@ def isLegal(board: Board, x, y, orientation, ship_length):
         return True
     else:
         return False
+
 
 def placeShip(board: Board, vessel: tuple[str, int]):
     validPosition = False

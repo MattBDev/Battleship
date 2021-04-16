@@ -69,10 +69,10 @@ class Statistics(object):
 
     # Returns result of the game
     def get_result(self):
-        print("Game lasted for:", self.get_turns, " turns")
-        print("Player made:", self.get_shots, " Shots")
-        print("Player made:", self.get_misses, " misses")
-        print("Player hit ships:", self.get_hits, " times")
+        print("Game lasted for:", self.get_turns(), "turns")
+        print("Player made:", self.get_shots(), "Shots")
+        print("Player made:", self.get_misses(), "misses")
+        print("Player hit ships:", self.get_hits(), "times")
 
 
 """

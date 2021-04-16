@@ -39,8 +39,7 @@ def main():
     done = -1
 
     myBoard = GameBoard.Board()
-
-    # TODO: add statistics scoreboard for end of game
+    result = GameBoard.Statistics()
 
     playerOne = agents.HP_AI(myBoard)
     playerTwo = agents.HP_AI(myBoard)
@@ -60,6 +59,7 @@ def main():
     print("GAMEOVER: Player ", done, " has lost!")
 
     myBoard.print_board(1)
+    result.get_result()
 
 
 if __name__ == "__main__":
