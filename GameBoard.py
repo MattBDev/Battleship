@@ -108,6 +108,11 @@ class Board(object):
         screen = pygame.display.set_mode(size1)
         pygame.display.set_caption("Battleship")
 
+        font = pygame.font.SysFont("comicsansms", 42)
+        text1 = font.render("0   1   2   3   4   5   6   7   8   9", True, BLACK)
+        text2 = font.render("9   8   7   6   5   4   3   2   1   0", True, BLACK)
+        text2 = pygame.transform.rotate(text2, 90)
+
         AllShipsSunk = False  # Loop until the user clicks the close button
         clock = pygame.time.Clock()  # Used to manage how fast the screen updates
 
@@ -115,6 +120,8 @@ class Board(object):
             for event in pygame.event.get():  # User did something
                 if event.type == pygame.QUIT:  # If user clicked close
                     AllShipsSunk = True  # Flag that we are done so we exit this loop
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    AllShipsSunk = True
 
             # --- Game logic should go here
 
@@ -122,6 +129,9 @@ class Board(object):
 
             # Drawing the display
             screen.fill(WHITE)
+
+            screen.blit(text1, (75, 0))
+            screen.blit(text2, (0, 75))
 
             # Fills all of the grid spaces with white
             for row in range(10):
@@ -135,9 +145,10 @@ class Board(object):
                     if self.grid[row][column] == [False, True]:     # Ship
                         color = GREEN
 
-                    pygame.draw.rect(screen, color, [(margin + width) * column + margin,
-                                                     (margin + height) * row + margin,
-                                                     width, height])
+                    pygame.draw.rect(screen, color,
+                                     [(margin + width) * column + margin + 50,
+                                      (margin + height) * row + margin + 50,
+                                      width, height])
 
             # Updates the screen with what has been drawn.
             pygame.display.flip()
@@ -148,6 +159,12 @@ class Board(object):
         screen = pygame.display.set_mode(size2)
         pygame.display.set_caption("Battleship")
 
+        font = pygame.font.SysFont("comicsansms", 42)
+        text1 = font.render("0   1   2   3   4   5   6   7   8   9", True, BLACK)
+        text2 = font.render("9   8   7   6   5   4   3   2   1   0", True, BLACK)
+        text2 = pygame.transform.rotate(text2, 90)
+
+        print(size2)
         AllShipsSunk = False  # Loop until the user clicks the close button
         clock = pygame.time.Clock()  # Used to manage how fast the screen updates
 
@@ -155,6 +172,8 @@ class Board(object):
             for event in pygame.event.get():  # User did something
                 if event.type == pygame.QUIT:  # If user clicked close
                     AllShipsSunk = True  # Flag that we are done so we exit this loop
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    AllShipsSunk = True
 
             # --- Game logic should go here
 
@@ -163,26 +182,43 @@ class Board(object):
             # Drawing the display
             screen.fill(WHITE)
 
-            pygame.draw.rect(screen, BLACK, pygame.Rect(1288 / 2, 0, 40, 644))
+            screen.blit(text1, (75, 0))
+            screen.blit(text1, (815, 0))
+            screen.blit(text2, (0, 75))
+            screen.blit(text2, (745, 75))
 
             # Fills all of the grid spaces with white
             for row in range(10):
-                for column in range(20):
+                for column in range(10):
                     color = BLUE
 
-                    # TODO: implement if statement for grid hit/miss as in single_board
+                    if self.grid[row][column] == [True, False]:     # Miss
+                        color = BLACK
+                    if self.grid[row][column] == [True, True]:      # Hit
+                        color = RED
+                    if self.grid[row][column] == [False, True]:     # Ship
+                        color = GREEN
 
-                    if column > 9:
-                        pygame.draw.rect(screen, color,
-                                         [(margin + width) * column + 44 + margin,
-                                          (margin + height) * row + margin, width,
-                                          height])
+                    pygame.draw.rect(screen, color,
+                                     [(margin + width) * column + margin + 50,
+                                      (margin + height) * row + margin + 50,
+                                      width, height])
 
-                    if column < 10:
-                        pygame.draw.rect(screen, color,
-                                         [(margin + width) * column + margin,
-                                          (margin + height) * row + margin, width,
-                                          height])
+            for row in range(10):
+                for column in range(10):
+                    color = BLUE
+
+                    if self.grid[row][column] == [True, False]:     # Miss
+                        color = BLACK
+                    if self.grid[row][column] == [True, True]:      # Hit
+                        color = RED
+                    if self.grid[row][column] == [False, True]:     # Ship
+                        color = GREEN
+
+                    pygame.draw.rect(screen, color,
+                                     [(margin + width) * column + margin + 794,
+                                      (margin + height) * row + margin + 50,
+                                      width, height])
 
             # Updates the screen with what has been drawn.
             pygame.display.flip()

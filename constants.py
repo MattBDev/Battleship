@@ -18,12 +18,12 @@ width, height = 60, 60
 margin = 4
 
 # Set the Width and Height of the screen [width, height]
-size1 = [(width * 10) + (margin * 10) + margin,
-         (height * 10) + (margin * 10) + margin]
+size1 = [(width * 10) + (margin * 10) + margin + 50,
+         (height * 10) + (margin * 10) + margin + 50]
 
 # Set the Width and Height of the screen [width, height]
-size2 = [((width * 10) + (margin * 10) + margin) * 2 + 40,
-         (height * 10) + (margin * 10) + margin]
+size2 = [((width * 10) + (margin * 10) + margin) * 2 + 150,
+         (height * 10) + (margin * 10) + margin + 50]
 
 # List[Tuple[str,int]] has name and size of ships
 ALL_SHIPS = [("Carrier", 5), ("Battleship", 4),

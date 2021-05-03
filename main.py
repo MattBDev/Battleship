@@ -41,6 +41,9 @@ def main():
     myBoard = GameBoard.Board()
     result = GameBoard.Statistics()
 
+    print("(", myBoard.grid[0][0].shot, ",", myBoard.grid[0][0].ship, ")")
+
+    """
     playerOne = agents.HP_AI(myBoard)
     playerTwo = agents.HP_AI(myBoard)
 
@@ -57,8 +60,9 @@ def main():
         done = -1
 
     print("GAMEOVER: Player ", done, " has lost!")
+    """
 
-    myBoard.print_board(1)
+    myBoard.print_board(1)  # TODO: add board parameter to pass in grid
     result.get_result()
 
 
