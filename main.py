@@ -30,39 +30,40 @@ contain a Tile. Note that the entire game consists of two boards (one for each p
 """
 
 # Imports
+from __future__ import annotations
+
+import pygame
+
 import GameBoard
 import agents
+from ship import Fleet
 
 
 def main():
+    pygame.init()
     # Initialize
     done = -1
 
-    myBoard = GameBoard.Board()
+    ai_board = GameBoard.Board()
     result = GameBoard.Statistics()
-
-    print("(", myBoard.grid[0][0].shot, ",", myBoard.grid[0][0].ship, ")")
-
-    """
-    playerOne = agents.HP_AI(myBoard)
-    playerTwo = agents.HP_AI(myBoard)
-
+    ai_fleet = Fleet(ai_board)
+    ai_board.single_board(ai_fleet)
+    # playerOne = agents.Hunt(ai_board)
+    # playerTwo = agents.Hunt(ai_board)
     # Loop (done will contain the player number who lost).
-    while done < 0:
-        playerOne.takeTurn()
-        playerTwo.takeTurn()
-
-        if playerOne.evaluate():
-            done = 1
-        elif playerTwo.evaluate():
-            done = 2
-        # Remove the variable below once the game loop is ready and functional.
-        done = -1
+    # while done < 0:
+    #     playerOne.takeTurn()
+    #     playerTwo.takeTurn()
+    #
+    #     if playerOne.evaluate():
+    #         done = 1
+    #     elif playerTwo.evaluate():
+    #         done = 2
+    #     # Remove the variable below once the game loop is ready and functional.
+    #     done = -1
 
     print("GAMEOVER: Player ", done, " has lost!")
-    """
-
-    myBoard.print_board(1)  # TODO: add board parameter to pass in grid
+    ai_board.print_board(1)  # TODO: add board parameter to pass in grid
     result.get_result()
 
 

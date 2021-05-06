@@ -14,13 +14,13 @@ self.aliveSections: what tiles of the ship have not been hit
 self.sections: array representing tile sections the ship is on
 """
 from __future__ import annotations
-from random import randint
+
 import random
+from random import randint
 from typing import Tuple
 
 import GameBoard
 from GameBoard import Board
-from agents import Hunt
 from direction import Orientation
 from ship import Ship
 
@@ -70,7 +70,7 @@ def Random_findShot(board, prevShot):
 
     return x, y
 
-def Hunt_findShot(agent: Hunt, board: GameBoard, prevShot) -> Tuple[int, int]:
+def Hunt_findShot(agent, board: GameBoard, prevShot) -> Tuple[int, int]:
     # TODO: Add code to actually find a good shot.
 
     # The Hunt-Parity algorithm works by

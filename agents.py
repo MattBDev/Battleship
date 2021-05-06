@@ -5,6 +5,8 @@
 # Copyright (c) 2021
 
 # This file contains the AI agents.
+
+from __future__ import annotations
 from typing import Tuple, List
 
 from constants import BATTLESHIP, CARRIER, DESTROYER, PTBOAT, SUBMARINE
@@ -25,7 +27,7 @@ class HP_AI:
         self.shipSet.append(algorithms.placeShip(self.board, PTBOAT))
 
         for ship in self.shipSet:
-            print(ship)
+            print("Ship  " + ship)
 
     # Determines whether this player has any ships left.
     def evaluate(self):
@@ -60,7 +62,7 @@ class Random_AI:
         self.shipSet.append(algorithms.placeShip(self.board, PTBOAT))
 
         for ship in self.shipSet:
-            print(ship)
+            print("Ship  " + ship)
 
     # Determines whether this player has any ships left.
     def evaluate(self):
@@ -87,42 +89,33 @@ class Hunt:
         self.board = board
         self.shipsAlive = 5
         self.prevShot = -1, -1
-        self.shipSet = []
         self.huntList: List[Tuple[int, int]] = []
         self.prevShotList: List[Tuple[int, int]] = []
-        self.shipSet.append(algorithms.placeShip(self.board, CARRIER))
-        self.shipSet.append(algorithms.placeShip(self.board, BATTLESHIP))
-        self.shipSet.append(algorithms.placeShip(self.board, DESTROYER))
-        self.shipSet.append(algorithms.placeShip(self.board, SUBMARINE))
-        self.shipSet.append(algorithms.placeShip(self.board, PTBOAT))
-
-        for ship in self.shipSet:
-            print(ship)
 
     # Determines whether this player has any ships left.
     def evaluate(self):
         self.shipsAlive = 0
 
         # Count number of living ships.
-        for ship in self.shipSet:
-            if ship.isAlive():
-                self.shipsAlive += 1
-
-        if self.shipsAlive == 0:
-            return
+        # for ship in self.shipSet:
+        #     if ship.isAlive():
+        #         self.shipsAlive += 1
+        #
+        # if self.shipsAlive == 0:
+        #     return
 
     # Are there still ships alive on the grid?
     def checkShipsAlive(self):
         self.shipsAlive = 0
 
-        # Count number of living ships.
-        for ship in self.shipSet:
-            if ship.isAlive():
-                self.shipsAlive += 1
-                return True
-
-        if self.shipsAlive == 0:
-            return False
+        # # Count number of living ships.
+        # for ship in self.shipSet:
+        #     if ship.isAlive():
+        #         self.shipsAlive += 1
+        #         return True
+        #
+        # if self.shipsAlive == 0:
+        #     return False
 
     # Called when the game is ready for this AI to take their turn.
     def takeTurn(self):
@@ -131,4 +124,3 @@ class Hunt:
             self.prevShot = shotCoord
             actions.fire(self.board, shotCoord)
             self.board.add_turns()  # TODO the statistics object needs to exist before we can actually use this function
-
