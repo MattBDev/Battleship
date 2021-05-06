@@ -3,7 +3,8 @@
 # Ryan Balachandran
 # Matt Bonanno
 # Copyright (c) 2021
-
+from __future__ import annotations
+from typing import List, Any
 import pygame
 from constants import *
 
@@ -13,10 +14,13 @@ The Tile class composes the basic makeup of the Battleship board.
 
 shot: Has this tile been shot at?
 ship: Is a ship segment present?
+missed: Was there a shot here and did it miss?
 """
 class Tile(object):
     shot = False
     ship = False
+    missed = False
+    hit = True
 
 
 """
@@ -89,6 +93,8 @@ single_board: displays one grid to screen when testing algorithms
 double_board: displays two grids to screen when comparing algorithms
 """
 class Board(object):
+    grid: List[List[Tile]]
+
     def __init__(self):
         self.grid = []  # Used for making the gameboard
         self.ships = []
@@ -97,12 +103,13 @@ class Board(object):
         for row in range(10):
             self.grid.append([])  # Add an empty array that will hold each Tile
             for column in range(10):
-                self.grid[row].append(Tile)
+                self.grid[row].append(Tile())
 
     # shoot the given tile and perform the appropriate cleanup
-    def shootTile(self, coord):
+    def shootTile(self, coord, targetPlayer):
         print(coord)
-        self.grid[coord[0]][coord[1]] = [True, False]
+        self.grid[coord[0]][coord[1]].shot = True
+        self.grid[coord[0]][coord[1]].ship = False
 
     def single_board(self):
         screen = pygame.display.set_mode(size1)

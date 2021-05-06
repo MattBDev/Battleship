@@ -14,52 +14,15 @@ self.aliveSections: what tiles of the ship have not been hit
 self.sections: array representing tile sections the ship is on
 """
 from __future__ import annotations
-from os import stat
 from random import randint
 import random
 from typing import Tuple
 
+import GameBoard
 from GameBoard import Board
-from direction import Direction, Orientation
-
-
-class Ship:
-    # origin = origin coordinate
-    def __init__(self, origin, direction, length):
-        self.length = length
-        self.aliveSections = length
-
-        self.sections = []
-
-        # Sections take the form [(xCoord, yCoord), Alive?]
-        for index in range(self.length):
-            if direction == Direction.NORTH:
-                v1 = ((origin[0], origin[1] + index), True)
-                self.sections.append(v1)
-            elif direction == Direction.SOUTH:
-                self.sections.append(((origin[0], origin[1] - index), True))
-            elif direction == Direction.EAST:
-                self.sections.append(((origin[0] + index, origin[1]), True))
-            elif direction == Direction.WEST:
-                self.sections.append(((origin[0] - index, origin[1]), True))
-
-    def hit(self, coord: Tuple[int, int]):
-        self.sections[self.sections.index(((coord[0], coord[1]), True))][2] = False
-        self.aliveSections -= 1
-
-        # TODO: add hit and miss function from GameBoard
-
-    def isAlive(self):
-        if self.aliveSections <= 0:
-            return False
-        return True
-
-    @staticmethod
-    def isInGrid(x, y, orientation, ship_length) -> bool:
-        if orientation == Orientation.VERTICAL:
-            return x + ship_length <= 10
-        else:
-            return y + ship_length <= 10
+from agents import Hunt
+from direction import Orientation
+from ship import Ship
 
 
 def HP_findShot(board, prevShot):
@@ -70,7 +33,6 @@ def HP_findShot(board, prevShot):
     # - Not firing at squarely adjacent tiles.
     # HUNT
     # - Once a hit is achieved, search the nearby tiles.
-
     x = 0
     y = 0
 
@@ -105,6 +67,40 @@ def Random_findShot(board, prevShot):
     while not board.grid[prevShot[0]][prevShot[1]].shot:
         x = random.randint(0, 9)
         y = random.randint(0, 9)
+
+    return x, y
+
+def Hunt_findShot(agent: Hunt, board: GameBoard, prevShot) -> Tuple[int, int]:
+    # TODO: Add code to actually find a good shot.
+
+    # The Hunt-Parity algorithm works by
+    # HUNT
+    # - Once a hit is achieved, search the nearby tiles.
+    x = 0
+    y = 0
+
+    if board.grid[prevShot[0]][prevShot[1]].shot is True and board.grid[prevShot[0]][prevShot[1]].ship is True:
+        if not agent.huntList:
+            pop: Tuple[int, int] = agent.huntList.pop()
+            while pop in agent.prevShotList:
+                pop = agent.huntList.pop()
+            return pop
+        else:
+            print("either ship was sunk or an error occured")
+    else:
+        if board.grid[0][0].shot is True:
+            # We shot (0,0) first.
+            while board.grid[x][y].shot is True and y <= 10:
+                x = (x + 2) % 11
+                y += 1
+        elif board.grid[0][1].shot is True:
+            # We shot (0,1) first.
+            x = (x + 2) % 11
+            y += 1
+        else:
+            # We have not yet shot.
+            x = random.randint(0, 1)
+            y = 0
 
     return x, y
 
