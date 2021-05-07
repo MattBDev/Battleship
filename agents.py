@@ -9,7 +9,7 @@
 from __future__ import annotations
 
 import random
-from typing import Tuple, List
+from typing import Tuple, List, Set
 
 import constants
 from constants import BATTLESHIP, CARRIER, DESTROYER, PTBOAT, SUBMARINE
@@ -118,7 +118,7 @@ class Hunt:
         self.fleet = fleet
         self.shipsAlive = fleet.numShips
         self.prevShot = -1, -1
-        self.huntSet: Set[Tuple[int, int]] = []
+        self.huntSet: Set[Tuple[int, int]] = set()
 
     # Determines whether this player has any ships left.
     def evaluate(self):
