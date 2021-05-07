@@ -47,7 +47,7 @@ def main():
     ai_board = GameBoard.Board()
     result = GameBoard.Statistics()
     ai_fleet = Fleet(ai_board)
-    agent = agents.Hunt(ai_board, ai_fleet)
+    agent = agents.HuntParity(ai_board, ai_fleet)
     ai_board.single_board(ai_fleet, agent)
     while not ai_fleet.checkAllShipsSunk():
         agent.takeTurn()
@@ -66,7 +66,7 @@ def main():
     #     done = -1
 
     print("GAMEOVER: Player ", done, " has lost!")
-    ai_board.print_board(1)  # TODO: add board parameter to pass in grid
+    ai_board.print_board(1, ai_fleet, agent)  # TODO: add board parameter to pass in grid
     result.get_result()
 
 

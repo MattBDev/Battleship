@@ -131,13 +131,48 @@ class Board(object):
             pygame.display.update()
         return False
 
-    def single_board(self, fleet, agent):
+    def init_single_board(self):
         pygame.display.set_caption("Battleship")
         font = pygame.font.SysFont(["comicsansms", "Comic Sans MS", "Arial"], 42)
         text1 = font.render("0   1   2   3   4   5   6   7   8   9", True, BLACK)
         text2 = font.render("9   8   7   6   5   4   3   2   1   0", True, BLACK)
         text2 = pygame.transform.rotate(text2, 90)
 
+        self.screen.fill(WHITE)
+
+        self.screen.blit(text1, (75, 0))
+        self.screen.blit(text2, (0, 75))
+
+        for row in range(10):
+            for column in range(10):
+                color = BLUE
+
+                if self.grid[row][column].shot and not self.grid[row][column].ship:  # Miss
+                    color = BLACK
+                if self.grid[row][column].shot and self.grid[row][column].ship:  # Hit
+                    color = RED
+                if not self.grid[row][column].shot and self.grid[row][column].ship:  # Ship
+                    color = GREEN
+
+                if color is BLUE:
+                    print("BLUE")
+
+                pygame.draw.rect(self.screen, color,
+                                 [(margin + width) * column + margin + 50,
+                                  (margin + height) * row + margin + 50,
+                                  width, height])
+
+        # Updates the screen with what has been drawn.
+        pygame.display.update()
+        self.clock.tick(60)
+
+    def single_board(self, fleet, agent):
+        pygame.display.set_caption("Battleship")
+        font = pygame.font.SysFont(["comicsansms", "Comic Sans MS", "Arial"], 42)
+        text1 = font.render("0   1   2   3   4   5   6   7   8   9", True, BLACK)
+        text2 = font.render("9   8   7   6   5   4   3   2   1   0", True, BLACK)
+        text2 = pygame.transform.rotate(text2, 90)
+        self.init_single_board()
         AllShipsSunk = False  # Loop until the user clicks the close button
         fleet.populate()
         fleet.placeShipsRandomly()
@@ -154,30 +189,9 @@ class Board(object):
             # --- Screen-clearing code goes here
 
             # Drawing the display
-            self.screen.fill(WHITE)
-
-            self.screen.blit(text1, (75, 0))
-            self.screen.blit(text2, (0, 75))
-
-            # Fills all of the grid spaces with white
-            for row in range(10):
-                for column in range(10):
-                    color = BLUE
-
-                    if self.grid[row][column].shot == True and self.grid[row][column].ship == False:  # Miss
-                        color = BLACK
-                    if self.grid[row][column].shot and self.grid[row][column].ship:  # Hit
-                        color = RED
-                    if not self.grid[row][column].shot and self.grid[row][column].ship:  # Ship
-                        color = GREEN
-
-                    pygame.draw.rect(self.screen, color,
-                                     [(margin + width) * column + margin + 50,
-                                      (margin + height) * row + margin + 50,
-                                      width, height])
 
             # Updates the screen with what has been drawn.
-            pygame.display.flip()
+            pygame.display.update()
             self.clock.tick(60)
 
         pygame.quit()
@@ -255,8 +269,7 @@ class Board(object):
     def update_grid(self):
         for row in range(10):
             for column in range(10):
-                color = BLUE
-
+                color = None
                 if self.grid[row][column].shot and not self.grid[row][column].ship:  # Miss
                     color = BLACK
                 if self.grid[row][column].shot and self.grid[row][column].ship:  # Hit
@@ -264,10 +277,11 @@ class Board(object):
                 if not self.grid[row][column].shot and self.grid[row][column].ship:  # Ship
                     color = GREEN
 
-                pygame.draw.rect(self.screen, color,
-                                 [(margin + width) * column + margin + 794,
-                                  (margin + height) * row + margin + 50,
-                                  width, height])
+                if color is not None:
+                    pygame.draw.rect(self.screen, color,
+                                     [(margin + width) * column + margin + 794,
+                                      (margin + height) * row + margin + 50,
+                                      width, height])
 
         # Updates the screen with what has been drawn.
         pygame.display.flip()
@@ -285,23 +299,20 @@ class Board(object):
             color = GREEN
             print("color now green at {0} , {1}".format(row, column))
 
-        if color is None:
-            print("ERROR")
-            quit()
-        pygame.draw.rect(self.screen, color,
-                         [(margin + width) * column + margin + 794,
-                          (margin + height) * row + margin + 50,
-                          width, height])
-
+        if color is not None:
+            pygame.draw.rect(self.screen, color,
+                             [(margin + width) * column + margin + 794,
+                              (margin + height) * row + margin + 50,
+                              width, height])
         # Updates the screen with what has been drawn.
         pygame.display.update()
         self.clock.tick(60)
 
-    def print_board(self, choice):
+    def print_board(self, choice, fleet, agent):
         # Initialize pygame
         pygame.init()
 
         if choice == 1:
-            self.single_board()
+            self.single_board(fleet, agent)
         elif choice == 2:
             self.double_board()

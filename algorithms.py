@@ -81,10 +81,10 @@ def Hunt_findShot(agent, board: GameBoard, prevShot) -> Tuple[int, int]:
     y = 0
 
     if board.grid[prevShot[0]][prevShot[1]].shot is True and board.grid[prevShot[0]][prevShot[1]].ship is True:
-        if not agent.huntList:
-            pop: Tuple[int, int] = agent.huntList.pop()
+        if not agent.huntSet:
+            pop: Tuple[int, int] = agent.huntSet.pop()
             while pop in agent.prevShotList:
-                pop = agent.huntList.pop()
+                pop = agent.huntSet.pop()
             return pop
         else:
             print("either ship was sunk or an error occured")

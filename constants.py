@@ -6,7 +6,7 @@
 # Define some colors
 from __future__ import annotations
 
-from typing import Tuple, List
+from typing import Tuple, List, Set
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -43,9 +43,9 @@ PTBOAT = ALL_SHIPS[4]
 # from stackoverflow https://stackoverflow.com/a/48677124/13283504
 # modified for our project
 def get_adjacent_cells(board, x_coord, y_coord):
-    adj_cells: List[Tuple[int, int]] = []
+    adj_cells: Set[Tuple[int, int]] = set()
     for x, y in [(x_coord + i, y_coord + j) for i in range(-1, 2) for j in range(-1, 2) if i != 0 or j != 0]:
         if 0 <= x < 9 and 0 <= y < 9:
             if not board.grid[x][y].shot:
-                adj_cells.append((x, y))
+                adj_cells.add((x, y))
     return adj_cells
