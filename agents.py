@@ -11,6 +11,7 @@ from __future__ import annotations
 import random
 from typing import Tuple, List
 
+import GameBoard
 import constants
 from constants import BATTLESHIP, CARRIER, DESTROYER, PTBOAT, SUBMARINE
 import actions
@@ -38,7 +39,7 @@ class Random_AI:
 
         # Count number of living ships.
         for ship in self.shipSet:
-            if ship.isAlive():
+            if ship.isSunk():
                 self.shipsAlive += 1
 
         if self.shipsAlive == 0:
@@ -53,7 +54,8 @@ class Random_AI:
 
 
 class Hunt:
-    def __init__(self, board, fleet):
+    def __init__(self, board, fleet, stats: GameBoard.Statistics):
+        self.stats = stats
         self.board = board
         self.fleet = fleet
         self.shipsAlive = fleet.numShips
@@ -90,21 +92,27 @@ class Hunt:
         print(self.__class__, " taking turn")
         shot_pos = self.findRandomShot()
         if len(self.huntList) == 0:
-            print("hunt list empty")
             shot_pos = self.findRandomShot()
             result = actions.fire(self.board, shot_pos)
             if result:
+                self.stats.add_hits()
+                self.fleet.getShipAtCoord(shot_pos[0], shot_pos[1]).addDamage()
                 for adj_cells in constants.get_adjacent_cells(self.board, shot_pos[0], shot_pos[1]):
                     if adj_cells not in self.huntList:
                         self.huntList.append(adj_cells)
+            else:
+                self.stats.add_misses()
         else:
-            print("hunt list not empty.")
             pop = self.huntList.pop()
             result = actions.fire(self.board, pop)
             if result:
+                self.stats.add_hits()
+                self.fleet.getShipAtCoord(pop[0], pop[1]).addDamage()
                 for adj_cells in constants.get_adjacent_cells(self.board, pop[0], pop[1]):
                     if adj_cells not in self.huntList:
                         self.huntList.append(adj_cells)
+            else:
+                self.stats.add_misses()
 
     def findRandomShot(self):
         while True:
@@ -115,8 +123,8 @@ class Hunt:
 
 
 class HuntParity(Hunt):
-    def __init__(self, board, fleet):
-        super().__init__(board, fleet)
+    def __init__(self, board, fleet, stats):
+        super().__init__(board, fleet, stats)
         self.parity_coords = set()
 
     def findRandomShot(self):
@@ -134,7 +142,7 @@ class HuntParity(Hunt):
             print(x, ",", y)
             if not self.board.grid[x][y].shot:
                 if len(self.parity_coords) < 24:
-                    if x % 2 == 0 and y % 2 == 0:
+                    if x % 2 == 0 or y % 2 == 0:
                         self.parity_coords.add((x, y))
                         return x, y
                 else:

@@ -45,16 +45,14 @@ class Statistics(object):
     def get_shots(self):
         return self.shots
 
-    def add_shots(self):
-        self.shots = self.shots + 1
-        return self.shots
-
     # Returns number of misses
     def get_misses(self):
         return self.misses
 
     def add_misses(self):
         self.misses = self.misses + 1
+        self.shots = self.shots + 1
+
         return self.misses
 
     # Returns number of hits
@@ -63,6 +61,7 @@ class Statistics(object):
 
     def add_hits(self):
         self.hits = self.hits + 1
+        self.shots = self.shots + 1
         return self.hits
 
     # Returns number of turns taken
@@ -116,7 +115,6 @@ class Board(object):
     def shootTile(self, coord) -> bool:
         if self.grid[coord[0]][coord[1]].ship:
             self.grid[coord[0]][coord[1]].shot = True
-            print("HIT!!! (", coord[0], ", ", coord[1], ").")
             pygame.draw.rect(self.screen, RED,
                              [(margin + width) * coord[1] + margin + 50,
                               (margin + height) * coord[0] + margin + 50,
@@ -177,7 +175,7 @@ class Board(object):
         fleet.populate()
         fleet.placeShipsRandomly()
 
-        while not fleet.checkAllShipsSunk() or not AllShipsSunk:
+        while not fleet.checkAllShipsSunk():
             agent.takeTurn()
             for event in pygame.event.get():  # User did something
                 if event.type == pygame.QUIT:  # If user clicked close

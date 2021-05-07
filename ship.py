@@ -29,9 +29,18 @@ class Fleet(object):
 
     def checkAllShipsSunk(self):
         for ship in self.fleetRoster:
-            if ship.isAlive():
+            if not ship.isSunk():
                 return False
         return True
+
+    def getShipAtCoord(self, x, y):
+        for ship in self.fleetRoster:
+            if ship.orientation == Orientation.VERTICAL:
+                if y == ship.coords[1] and ship.coords[0] <= x < ship.coords[0] + ship.length:
+                    return ship
+            else:
+                if x == ship.coords[0] and ship.coords[1] <= y < ship.coords[1] + ship.length:
+                    return ship
 
 class Ship(object):
     orientation: Orientation
@@ -57,7 +66,7 @@ class Ship(object):
     def addDamage(self):
         self.damage = self.damage + 1
 
-    def isAlive(self):
+    def isSunk(self):
         return self.damage >= self.maxDamage
 
     def checkSunk(self) -> bool:
