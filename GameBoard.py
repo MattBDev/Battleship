@@ -60,6 +60,7 @@ class Statistics(object):
         return self.hits
 
     def add_hits(self):
+        print("add hit")
         self.hits = self.hits + 1
         self.shots = self.shots + 1
         return self.hits
@@ -151,9 +152,6 @@ class Board(object):
                     color = RED
                 if not self.grid[row][column].shot and self.grid[row][column].ship:  # Ship
                     color = GREEN
-
-                if color is BLUE:
-                    print("BLUE")
 
                 pygame.draw.rect(self.screen, color,
                                  [(margin + width) * column + margin + 50,

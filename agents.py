@@ -12,45 +12,36 @@ import random
 from typing import Tuple, List
 
 import GameBoard
-import constants
-from constants import BATTLESHIP, CARRIER, DESTROYER, PTBOAT, SUBMARINE
 import actions
-import algorithms
+import constants
 
 
 class Random_AI:
-    def __init__(self, board):
+    def __init__(self, board, fleet, stats: GameBoard.Statistics):
+        self.stats = stats
         self.board = board
-        self.shipsAlive = 5
+        self.fleet = fleet
+        self.shipsAlive = fleet.numShips
         self.prevShot = -1, -1
-        self.shipSet = []
-        self.shipSet.append(algorithms.placeShip(self.board, CARRIER))
-        self.shipSet.append(algorithms.placeShip(self.board, BATTLESHIP))
-        self.shipSet.append(algorithms.placeShip(self.board, DESTROYER))
-        self.shipSet.append(algorithms.placeShip(self.board, SUBMARINE))
-        self.shipSet.append(algorithms.placeShip(self.board, PTBOAT))
-
-        for ship in self.shipSet:
-            print("Ship  " + ship)
-
-    # Determines whether this player has any ships left.
-    def evaluate(self):
-        self.shipsAlive = 0
-
-        # Count number of living ships.
-        for ship in self.shipSet:
-            if ship.isSunk():
-                self.shipsAlive += 1
-
-        if self.shipsAlive == 0:
-            return
+        self.huntList: List[Tuple[int, int]] = []
 
     # Called when the game is ready for this AI to take their turn.
     def takeTurn(self):
-        shotCoord = algorithms.Random_findShot(self.board, self.prevShot)
-        self.prevShot = shotCoord
-        actions.fire(self.board, shotCoord)
-        self.board.add_turns()
+        print(self.__class__, " taking turn")
+        shot_pos = self.findRandomShot()
+        result = actions.fire(self.board, shot_pos)
+        if result:
+            self.stats.add_hits()
+            self.fleet.getShipAtCoord(shot_pos[0], shot_pos[1]).addDamage()
+        else:
+            self.stats.add_misses()
+
+    def findRandomShot(self):
+        while True:
+            x = random.randint(0, 10)
+            y = random.randint(0, 10)
+            if not self.board.grid[x][y].shot:
+                return x, y
 
 
 class Hunt:
@@ -62,35 +53,9 @@ class Hunt:
         self.prevShot = -1, -1
         self.huntList: List[Tuple[int, int]] = []
 
-    # Determines whether this player has any ships left.
-    def evaluate(self):
-        self.shipsAlive = 0
-
-        # Count number of living ships.
-        # for ship in self.shipSet:
-        #     if ship.isAlive():
-        #         self.shipsAlive += 1
-        #
-        # if self.shipsAlive == 0:
-        #     return
-
-    # Are there still ships alive on the grid?
-    def checkShipsAlive(self):
-        self.shipsAlive = 0
-
-        # # Count number of living ships.
-        # for ship in self.shipSet:
-        #     if ship.isAlive():
-        #         self.shipsAlive += 1
-        #         return True
-        #
-        # if self.shipsAlive == 0:
-        #     return False
-
     # Called when the game is ready for this AI to take their turn.
     def takeTurn(self):
         print(self.__class__, " taking turn")
-        shot_pos = self.findRandomShot()
         if len(self.huntList) == 0:
             shot_pos = self.findRandomShot()
             result = actions.fire(self.board, shot_pos)
@@ -98,7 +63,7 @@ class Hunt:
                 self.stats.add_hits()
                 self.fleet.getShipAtCoord(shot_pos[0], shot_pos[1]).addDamage()
                 for adj_cells in constants.get_adjacent_cells(self.board, shot_pos[0], shot_pos[1]):
-                    if adj_cells not in self.huntList:
+                    if adj_cells not in self.huntList and not self.board.grid[adj_cells[0]][adj_cells[1]].shot:
                         self.huntList.append(adj_cells)
             else:
                 self.stats.add_misses()
@@ -109,7 +74,7 @@ class Hunt:
                 self.stats.add_hits()
                 self.fleet.getShipAtCoord(pop[0], pop[1]).addDamage()
                 for adj_cells in constants.get_adjacent_cells(self.board, pop[0], pop[1]):
-                    if adj_cells not in self.huntList:
+                    if adj_cells not in self.huntList and not self.board.grid[adj_cells[0]][adj_cells[1]].shot:
                         self.huntList.append(adj_cells)
             else:
                 self.stats.add_misses()
