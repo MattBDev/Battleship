@@ -45,7 +45,7 @@ PTBOAT = ALL_SHIPS[4]
 def get_adjacent_cells(board, x_coord, y_coord):
     adj_cells: Set[Tuple[int, int]] = set()
     for x, y in [(x_coord + i, y_coord + j) for i in range(-1, 2) for j in range(-1, 2) if i != 0 or j != 0]:
-        if 0 <= x < 9 and 0 <= y < 9:
+        if 0 <= x < 10 and 0 <= y < 10:
             if not board.grid[x][y].shot:
                 adj_cells.add((x, y))
     return adj_cells
