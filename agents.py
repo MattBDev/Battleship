@@ -106,18 +106,13 @@ class HuntParity(Hunt):
         # The Random algorithm works by firing at random tiles
         # Randomly shoot within grid parameters
         while True:
-            if len(self.parity_coords) < 24:
-                x = random.randrange(0, 10, 2)
-                y = random.randrange(0, 10, 2)
-            else:
                 # print("ignoring parity")
-                x = random.randint(0, 9)
-                y = random.randint(0, 9)
+            x = random.randint(0, 10)
+            y = random.randint(0, 10)
             # print(x, ",", y)
-            if y < 10 and x < 10 and not self.board.grid[x][y].shot and (x,y) not in self.coords_hit:
-                if len(self.parity_coords) < 24:
-                    if x % 2 == 0 or y % 2 == 0:
-                        self.parity_coords.add((x, y))
-                        return x, y
-                else:
+            if y < 10 and x < 10 and not self.board.grid[x][y].shot and (x,y) not in self.coords_hit and (x,y) not in self.parity_coords:
+                if x % 2 == 0 and y % 2 == 0:
+                    self.parity_coords.add((x, y))
+                    return x, y
+                elif len(self.parity_coords) < 24:
                     return x, y
