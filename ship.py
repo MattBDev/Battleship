@@ -27,6 +27,11 @@ class Fleet(object):
                     illegallyPlaced = False
                     ship.initalize(randomX, randomY, randomDir)
 
+    def checkAllShipsSunk(self):
+        for ship in self.fleetRoster:
+            if ship.isAlive():
+                return False
+        return True
 
 class Ship(object):
     orientation: Orientation
@@ -53,9 +58,7 @@ class Ship(object):
         self.damage = self.damage + 1
 
     def isAlive(self):
-        if self.aliveSections <= 0:
-            return False
-        return True
+        return self.damage >= self.maxDamage
 
     def checkSunk(self) -> bool:
         return self.damage >= self.maxDamage
@@ -85,7 +88,5 @@ class Ship(object):
         for i in range(self.length):
             if dir == Orientation.VERTICAL:
                 self.board.grid[x + i][y].ship = True
-                self.board.update_Tile(x + i, y)
             else:
                 self.board.grid[x][y + i].ship = True
-                self.board.update_Tile(x, y + i)

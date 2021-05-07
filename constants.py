@@ -42,15 +42,10 @@ PTBOAT = ALL_SHIPS[4]
 
 # from stackoverflow https://stackoverflow.com/a/48677124/13283504
 # modified for our project
-def get_adjacent_cells(x_coord, y_coord):
-    grid = []
-    for row in range(10):
-        grid.append([])  # Add an empty array that will hold each Tile
-        for column in range(10):
-            grid[row].append(True)
+def get_adjacent_cells(board, x_coord, y_coord):
+    adj_cells: List[Tuple[int, int]] = []
     for x, y in [(x_coord + i, y_coord + j) for i in range(-1, 2) for j in range(-1, 2) if i != 0 or j != 0]:
-        if x < 0 or y < 0:
-            continue
-        else:
-            if grid[x][y]:
-                print("Values: {0}, {1}".format(x, y))
+        if 0 <= x < 9 and 0 <= y < 9:
+            if not board.grid[x][y].shot:
+                adj_cells.append((x, y))
+    return adj_cells

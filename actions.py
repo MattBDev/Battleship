@@ -6,7 +6,8 @@
 
 from __future__ import annotations
 
-def fire(board, coord):
+# returns true if a ship was hit
+def fire(board, coord) -> bool:
     print("Firing at tile (", coord[0], ", ", coord[1], ").")
-    board.shootTile(coord)
-    board.Statistics.add_shots()
+    # board.Statistics.add_shots()
+    return board.shootTile(coord)

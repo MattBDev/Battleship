@@ -112,16 +112,26 @@ class Board(object):
                 self.grid[row].append(Tile())
 
     # shoot the given tile and perform the appropriate cleanup
-    def shootTile(self, coord, targetPlayer):
-        print(coord)
-        pygame.draw.rect(self.screen, RED,
-                         [(margin + width) * coord[1] + margin + 50,
-                          (margin + height) * coord[0] + margin + 50,
-                          width, height])
-        self.grid[coord[0]][coord[1]].shot = True
-        self.grid[coord[0]][coord[1]].ship = False
 
-    def single_board(self, fleet):
+    def shootTile(self, coord) -> bool:
+        if self.grid[coord[0]][coord[1]].ship:
+            self.grid[coord[0]][coord[1]].shot = True
+            print("HIT!!! (", coord[0], ", ", coord[1], ").")
+            pygame.draw.rect(self.screen, RED,
+                             [(margin + width) * coord[1] + margin + 50,
+                              (margin + height) * coord[0] + margin + 50,
+                              width, height])
+            pygame.display.update()
+            return True
+        else:
+            pygame.draw.rect(self.screen, BLACK,
+                             [(margin + width) * coord[1] + margin + 50,
+                              (margin + height) * coord[0] + margin + 50,
+                              width, height])
+            pygame.display.update()
+        return False
+
+    def single_board(self, fleet, agent):
         pygame.display.set_caption("Battleship")
         font = pygame.font.SysFont(["comicsansms", "Comic Sans MS", "Arial"], 42)
         text1 = font.render("0   1   2   3   4   5   6   7   8   9", True, BLACK)
@@ -129,8 +139,11 @@ class Board(object):
         text2 = pygame.transform.rotate(text2, 90)
 
         AllShipsSunk = False  # Loop until the user clicks the close button
+        fleet.populate()
+        fleet.placeShipsRandomly()
 
-        while not AllShipsSunk:
+        while not fleet.checkAllShipsSunk() or not AllShipsSunk:
+            agent.takeTurn()
             for event in pygame.event.get():  # User did something
                 if event.type == pygame.QUIT:  # If user clicked close
                     AllShipsSunk = True  # Flag that we are done so we exit this loop
@@ -138,7 +151,6 @@ class Board(object):
                     AllShipsSunk = True
 
             # --- Game logic should go here
-            fleet.populate()
             # --- Screen-clearing code goes here
 
             # Drawing the display
@@ -152,11 +164,11 @@ class Board(object):
                 for column in range(10):
                     color = BLUE
 
-                    if self.grid[row][column] == [True, False]:  # Miss
+                    if self.grid[row][column].shot == True and self.grid[row][column].ship == False:  # Miss
                         color = BLACK
-                    if self.grid[row][column] == [True, True]:  # Hit
+                    if self.grid[row][column].shot and self.grid[row][column].ship:  # Hit
                         color = RED
-                    if self.grid[row][column] == [False, True]:  # Ship
+                    if not self.grid[row][column].shot and self.grid[row][column].ship:  # Ship
                         color = GREEN
 
                     pygame.draw.rect(self.screen, color,
@@ -167,7 +179,6 @@ class Board(object):
             # Updates the screen with what has been drawn.
             pygame.display.flip()
             self.clock.tick(60)
-            fleet.placeShipsRandomly()
 
         pygame.quit()
 
@@ -264,8 +275,7 @@ class Board(object):
 
     def update_Tile(self, row, column):
         print("update tile")
-        color = BLUE
-
+        color = None
         if self.grid[row][column].shot and not self.grid[row][column].ship:  # Miss
             color = BLACK
         if self.grid[row][column].shot and self.grid[row][column].ship:  # Hit
@@ -275,13 +285,16 @@ class Board(object):
             color = GREEN
             print("color now green at {0} , {1}".format(row, column))
 
+        if color is None:
+            print("ERROR")
+            quit()
         pygame.draw.rect(self.screen, color,
                          [(margin + width) * column + margin + 794,
                           (margin + height) * row + margin + 50,
                           width, height])
 
         # Updates the screen with what has been drawn.
-        pygame.display.flip()
+        pygame.display.update()
         self.clock.tick(60)
 
     def print_board(self, choice):

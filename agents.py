@@ -7,8 +7,11 @@
 # This file contains the AI agents.
 
 from __future__ import annotations
+
+import random
 from typing import Tuple, List
 
+import constants
 from constants import BATTLESHIP, CARRIER, DESTROYER, PTBOAT, SUBMARINE
 import actions
 import algorithms
@@ -85,12 +88,12 @@ class Random_AI:
 
 
 class Hunt:
-    def __init__(self, board):
+    def __init__(self, board, fleet):
         self.board = board
-        self.shipsAlive = 5
+        self.fleet = fleet
+        self.shipsAlive = fleet.numShips
         self.prevShot = -1, -1
         self.huntList: List[Tuple[int, int]] = []
-        self.prevShotList: List[Tuple[int, int]] = []
 
     # Determines whether this player has any ships left.
     def evaluate(self):
@@ -119,8 +122,28 @@ class Hunt:
 
     # Called when the game is ready for this AI to take their turn.
     def takeTurn(self):
-        if self.checkShipsAlive():
-            shotCoord = algorithms.Hunt_findShot(self, self.board, self.prevShot)
-            self.prevShot = shotCoord
-            actions.fire(self.board, shotCoord)
-            self.board.add_turns()  # TODO the statistics object needs to exist before we can actually use this function
+        print("Hunt taking turn")
+        shot_pos = self.findRandomShot()
+        if len(self.huntList) == 0:
+            shot_pos = self.findRandomShot()
+            result = actions.fire(self.board, shot_pos)
+            if result:
+                self.huntList.extend(constants.get_adjacent_cells(self.board, shot_pos[0], shot_pos[1]))
+        else:
+            result = actions.fire(self.board, self.huntList.pop())
+            if result:
+                self.huntList.extend(constants.get_adjacent_cells(self.board, shot_pos[0], shot_pos[1]))
+
+    def findRandomShot(self):
+        # The Random algorithm works by firing at random tiles
+        x: int = 0
+        y: int = 0
+        alreadyShot = False
+        # Randomly shoot within grid parameters
+        while not alreadyShot:
+            x = random.randint(0, 9)
+            y = random.randint(0, 9)
+            if not self.board.grid[x][y].shot:
+                return x, y
+
+        return x, y

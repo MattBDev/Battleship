@@ -71,6 +71,7 @@ def Random_findShot(board, prevShot):
     return x, y
 
 def Hunt_findShot(agent, board: GameBoard, prevShot) -> Tuple[int, int]:
+
     # TODO: Add code to actually find a good shot.
 
     # The Hunt-Parity algorithm works by
