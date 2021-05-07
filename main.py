@@ -47,7 +47,7 @@ def main():
     ai_board = GameBoard.Board()
     stats = GameBoard.Statistics()
     ai_fleet = Fleet(ai_board)
-    agent = agents.HuntParity(ai_board, ai_fleet, stats)
+    agent = agents.Random_AI(ai_board, ai_fleet, stats)
     ai_board.single_board(ai_fleet, agent)
     # playerOne = agents.Hunt(ai_board)
     # playerTwo = agents.Hunt(ai_board)

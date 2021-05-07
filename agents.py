@@ -24,11 +24,14 @@ class Random_AI:
         self.shipsAlive = fleet.numShips
         self.prevShot = -1, -1
         self.huntList: List[Tuple[int, int]] = []
+        self.coords_hit = set()
 
     # Called when the game is ready for this AI to take their turn.
     def takeTurn(self):
         # print(self.__class__, " taking turn")
         shot_pos = self.findRandomShot()
+        while shot_pos in self.coords_hit:
+            shot_pos = self.findRandomShot()
         result = actions.fire(self, self.board, shot_pos)
         if result:
             self.stats.add_hits()
