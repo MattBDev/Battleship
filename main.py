@@ -47,10 +47,8 @@ def main():
     ai_board = GameBoard.Board()
     stats = GameBoard.Statistics()
     ai_fleet = Fleet(ai_board)
-    agent = agents.HuntParity(ai_board, ai_fleet, stats)
+    agent = agents.Hunt(ai_board, ai_fleet, stats)
     ai_board.single_board(ai_fleet, agent)
-    while not ai_fleet.checkAllShipsSunk():
-        agent.takeTurn()
     # playerOne = agents.Hunt(ai_board)
     # playerTwo = agents.Hunt(ai_board)
     # Loop (done will contain the player number who lost).

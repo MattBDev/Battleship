@@ -60,7 +60,6 @@ class Statistics(object):
         return self.hits
 
     def add_hits(self):
-        print("add hit")
         self.hits = self.hits + 1
         self.shots = self.shots + 1
         return self.hits

@@ -7,7 +7,8 @@
 from __future__ import annotations
 
 # returns true if a ship was hit
-def fire(board, coord) -> bool:
+def fire(ai, board, coord) -> bool:
+    ai.coords_hit.add(coord)
     print("Firing at tile (", coord[0], ", ", coord[1], ").")
     # board.Statistics.add_shots()
     return board.shootTile(coord)

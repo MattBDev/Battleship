@@ -27,9 +27,9 @@ class Random_AI:
 
     # Called when the game is ready for this AI to take their turn.
     def takeTurn(self):
-        print(self.__class__, " taking turn")
+        # print(self.__class__, " taking turn")
         shot_pos = self.findRandomShot()
-        result = actions.fire(self.board, shot_pos)
+        result = actions.fire(self, self.board, shot_pos)
         if result:
             self.stats.add_hits()
             self.fleet.getShipAtCoord(shot_pos[0], shot_pos[1]).addDamage()
@@ -40,7 +40,7 @@ class Random_AI:
         while True:
             x = random.randint(0, 10)
             y = random.randint(0, 10)
-            if not self.board.grid[x][y].shot:
+            if y < 10 and x < 10 and not self.board.grid[x][y].shot :
                 return x, y
 
 
@@ -52,29 +52,38 @@ class Hunt:
         self.shipsAlive = fleet.numShips
         self.prevShot = -1, -1
         self.huntList: List[Tuple[int, int]] = []
+        self.coords_hit = set()
 
     # Called when the game is ready for this AI to take their turn.
     def takeTurn(self):
-        print(self.__class__, " taking turn")
-        if len(self.huntList) == 0:
+        # print(self.__class__, " taking turn")
+        self.stats.add_turns()
+        if len(self.huntList) <= 0:
             shot_pos = self.findRandomShot()
-            result = actions.fire(self.board, shot_pos)
+            while shot_pos in self.coords_hit:
+                shot_pos = self.findRandomShot()
+            result = actions.fire(self, self.board, shot_pos)
             if result:
                 self.stats.add_hits()
                 self.fleet.getShipAtCoord(shot_pos[0], shot_pos[1]).addDamage()
                 for adj_cells in constants.get_adjacent_cells(self.board, shot_pos[0], shot_pos[1]):
-                    if adj_cells not in self.huntList and not self.board.grid[adj_cells[0]][adj_cells[1]].shot:
+                    if adj_cells not in self.huntList or adj_cells not in self.coords_hit:
                         self.huntList.append(adj_cells)
             else:
                 self.stats.add_misses()
         else:
             pop = self.huntList.pop()
-            result = actions.fire(self.board, pop)
+            while pop in self.coords_hit:
+                try:
+                    pop = self.huntList.pop()
+                except IndexError:
+                    pop = self.findRandomShot()
+            result = actions.fire(self, self.board, pop)
             if result:
                 self.stats.add_hits()
                 self.fleet.getShipAtCoord(pop[0], pop[1]).addDamage()
                 for adj_cells in constants.get_adjacent_cells(self.board, pop[0], pop[1]):
-                    if adj_cells not in self.huntList and not self.board.grid[adj_cells[0]][adj_cells[1]].shot:
+                    if adj_cells not in self.huntList or adj_cells not in self.coords_hit:
                         self.huntList.append(adj_cells)
             else:
                 self.stats.add_misses()
@@ -83,7 +92,7 @@ class Hunt:
         while True:
             x = random.randint(0, 10)
             y = random.randint(0, 10)
-            if not self.board.grid[x][y].shot:
+            if y < 10 and x < 10 and not self.board.grid[x][y].shot and (x,y) not in self.coords_hit:
                 return x, y
 
 
@@ -101,16 +110,14 @@ class HuntParity(Hunt):
                 x = random.randrange(0, 10, 2)
                 y = random.randrange(0, 10, 2)
             else:
-                print("ignoring parity")
+                # print("ignoring parity")
                 x = random.randint(0, 9)
                 y = random.randint(0, 9)
-            print(x, ",", y)
-            if not self.board.grid[x][y].shot:
+            # print(x, ",", y)
+            if y < 10 and x < 10 and not self.board.grid[x][y].shot and (x,y) not in self.coords_hit:
                 if len(self.parity_coords) < 24:
                     if x % 2 == 0 or y % 2 == 0:
                         self.parity_coords.add((x, y))
                         return x, y
                 else:
                     return x, y
-
-
